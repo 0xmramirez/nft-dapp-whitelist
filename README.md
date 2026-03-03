@@ -1,57 +1,49 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
+# Merkle Tree NFT Whitelist DApp
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+Una aplicación descentralizada (DApp) Full-Stack para el minteo de NFTs (ERC-721) desplegada en la red pública de **Sepolia**. Este proyecto implementa un sistema de *Whitelist* altamente seguro y optimizado en *gas* mediante criptografía de **Árboles de Merkle**.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+🔗 **[Ver Contrato en Etherscan](PON_AQUI_TU_ENLACE_A_ETHERSCAN)**
+🔗 **[Ver Web en Vivo](PON_AQUI_TU_ENLACE_DE_VERCEL_CUANDO_LO_TENGAS)**
 
-## Project Overview
+## Arquitectura y Tecnologías
 
-This example project includes:
+**Backend (Smart Contracts):**
+* **Solidity (^0.8.20):** Lenguaje principal del contrato.
+* **Hardhat:** Entorno de desarrollo, testing y despliegue.
+* **OpenZeppelin:** Estándares de seguridad probados en la industria (`ERC721`).
+* **MerkleTree.js & Keccak256:** Generación de raíces y pruebas criptográficas.
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+**Frontend (Web3):**
+* **Next.js & React:** Framework para la interfaz de usuario.
+* **Wagmi & Viem:** Hooks de React para interactuar con la blockchain.
+* **RainbowKit:** Gestión de conexión de wallets profesionales.
+* **Tailwind CSS:** Estilos rápidos y modernos.
 
-## Usage
+## El Problema que Resuelve: Optimización de Gas
 
-### Running Tests
+En lugar de almacenar un array gigante de direcciones permitidas en el Smart Contract (lo cual costaría miles de dólares en *gas* al desplegar en Ethereum Mainnet), este proyecto utiliza un Árbol de Merkle:
 
-To run all the tests in the project, execute the following command:
+1. El frontend calcula el árbol y el contrato solo guarda la **Raíz (Merkle Root)** en la blockchain (32 bytes).
+2. Cuando un usuario quiere mintear, el frontend genera una **Prueba Criptográfica (Merkle Proof)**.
+3. El contrato verifica matemáticamente la prueba contra la raíz. Si coincide, el usuario está autorizado. ¡Coste de almacenamiento en la blockchain casi cero!
 
-```shell
-npx hardhat test
-```
+## Funciones de Seguridad Incluidas
+* `owner`: El contrato registra al creador mediante `msg.sender`.
+* `withdraw()`: Función protegida para que solo el creador pueda retirar los fondos acumulados en el contrato.
+* Validación estricta de `msg.value` para asegurar el pago exacto del NFT.
 
-You can also selectively run the Solidity or `mocha` tests:
+## Cómo ejecutar en local
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
-```
+\`\`\`bash
+# 1. Clonar el repositorio
+git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+cd TU_REPOSITORIO
 
-### Make a deployment to Sepolia
+# 2. Instalar dependencias del frontend
+cd frontend
+npm install
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
-
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
-
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
-
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+# 3. Arrancar el servidor de desarrollo
+npm run dev
+\`\`\`
+Visita `http://localhost:3000` y conecta tu wallet en la red Sepolia.
