@@ -2,8 +2,7 @@
 
 Una aplicación descentralizada (DApp) Full-Stack para el minteo de NFTs (ERC-721) desplegada en la red pública de **Sepolia**. Este proyecto implementa un sistema de *Whitelist* altamente seguro y optimizado en *gas* mediante criptografía de **Árboles de Merkle**.
 
-🔗 **[Ver Contrato en Etherscan](PON_AQUI_TU_ENLACE_A_ETHERSCAN)**
-🔗 **[Ver Web en Vivo](PON_AQUI_TU_ENLACE_DE_VERCEL_CUANDO_LO_TENGAS)**
+🔗 **[Ver Contrato en Etherscan](https://sepolia.etherscan.io/address/0x8A4968D7B8aAbB62E47AABBB03400923B3F7E6Df)**
 
 ## Arquitectura y Tecnologías
 
