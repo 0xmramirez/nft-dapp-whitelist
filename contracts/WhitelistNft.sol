@@ -15,9 +15,12 @@ contract WhitelistNFT is ERC721 {
     uint256 public constant PUBLIC_MINT_PRICE = 0.01 ether;
     uint256 public constant WHITELIST_MINT_PRICE = 0.005 ether;
 
+    address public owner;
+
     // El constructor se ejecuta UNA SOLA VEZ cuando desplegamos el contrato
     constructor(bytes32 _initialMerkleRoot) ERC721("MiPortfolioNFT", "MPN") {
         merkleRoot = _initialMerkleRoot;
+        owner = msg.sender;
     }
 
     // Función para los usuarios en la Whitelist
@@ -48,6 +51,18 @@ contract WhitelistNFT is ERC721 {
         _nextTokenId++;
         
         _safeMint(msg.sender, tokenId);
+    }
+
+    function withdraw() public {
+        // Si el que llama a la función NO es el owner la rechaza
+        require(msg.sender == owner, "No eres el dueno del contrato");
+        
+        // balance guardado en contrato 
+        uint256 balance = address(this).balance;
+        
+        // envio balance a wallet
+        (bool success, ) = payable(owner).call{value: balance}("");
+        require(success, "Transfer failed");
     }
 
 }
